@@ -1,4 +1,4 @@
-package com.valentinstamate.prefo.prefo;
+package com.valentinstamate.prefo;
 
 import jakarta.ws.rs.ApplicationPath;
 import jakarta.ws.rs.core.Application;
