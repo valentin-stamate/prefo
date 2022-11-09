@@ -13,3 +13,6 @@
 * https://www.datanucleus.org/products/accessplatform_6_0/jakarta/persistence.html
 * https://gist.github.com/kelverarruda/a5228ba3d1c0cc33bc6e48f83f7722cf
 * https://blog.payara.fish/using-postgresql-with-payara-server
+* Database Schema Creation: https://docs.oracle.com/javaee/7/tutorial/persistence-intro005.htm
+* https://stackoverflow.com/q/6330543/10805602
+* https://eclipse-ee4j.github.io/jakartaee-tutorial/
