@@ -1,17 +1,20 @@
-package com.valentinstamate.prefo.persistence;
+package com.valentinstamate.prefo.persistence.repository;
 
+import com.valentinstamate.prefo.persistence.ClassModel;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
-import jdk.jfr.Name;
 
 @ApplicationScoped
 @Transactional
-@Name("userRepository")
-public class UserRepository {
+public class ClassRepository {
 
     @PersistenceContext(name = "default")
     private EntityManager em;
+
+    public ClassModel findById(Long id) {
+        return em.find(ClassModel.class, id);
+    }
 
 }

@@ -16,3 +16,4 @@
 * Database Schema Creation: https://docs.oracle.com/javaee/7/tutorial/persistence-intro005.htm
 * https://stackoverflow.com/q/6330543/10805602
 * https://eclipse-ee4j.github.io/jakartaee-tutorial/
+* https://youtu.be/ZMpF2AY6YFU

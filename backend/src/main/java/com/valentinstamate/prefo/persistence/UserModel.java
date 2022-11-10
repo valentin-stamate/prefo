@@ -1,10 +1,9 @@
 package com.valentinstamate.prefo.persistence;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+
 import java.io.Serializable;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -12,9 +11,12 @@ public class UserModel implements Serializable {
 
     @Id
     private Long id;
-
     @Column
-    private String username;
+    private String fullName;
+    @Column
+    private String identifier;
+    @Column
+    private String email;
 
     public Long getId() {
         return id;
@@ -25,10 +27,35 @@ public class UserModel implements Serializable {
     }
 
     public String getUsername() {
-        return username;
+        return fullName;
     }
 
     public void setUsername(String username) {
-        this.username = username;
+        this.fullName = username;
     }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public String getIdentifier() {
+        return identifier;
+    }
+
+    public void setIdentifier(String identifier) {
+        this.identifier = identifier;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
 }
