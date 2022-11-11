@@ -12,6 +12,7 @@ repositories {
 
 ext {
     junitVersion = '5.9.0'
+    poiVersion = '5.2.2'
 }
 
 sourceCompatibility = '11'
@@ -23,6 +24,10 @@ tasks.withType(JavaCompile) {
 
 dependencies {
     compileOnly 'jakarta.platform:jakarta.jakartaee-api:9.1.0'
+    implementation 'org.apache.logging.log4j:log4j-core:2.19.0'
+
+    implementation "org.apache.poi:poi:${poiVersion}"
+    implementation "org.apache.poi:poi-ooxml:${poiVersion}"
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")

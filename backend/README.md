@@ -17,3 +17,6 @@
 * https://stackoverflow.com/q/6330543/10805602
 * https://eclipse-ee4j.github.io/jakartaee-tutorial/
 * https://youtu.be/ZMpF2AY6YFU
+* https://www.baeldung.com/java-microsoft-excel
+* https://stackoverflow.com/a/73444434/10805602
+* https://stackoverflow.com/a/48075960/10805602
