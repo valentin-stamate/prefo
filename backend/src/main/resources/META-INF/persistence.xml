@@ -7,8 +7,6 @@
     <persistence-unit name="default">
         <jta-data-source>jdbc/postgresspool</jta-data-source>
 
-        <class>com.valentinstamate.prefo.persistence.UserModel</class>
-
         <properties>
             <property name="jakarta.persistence.schema-generation.database.action" value="drop-and-create"/>
             <property name="jakarta.persistence.sql-load-script-source" value="META-INF/sql/users.sql"/>

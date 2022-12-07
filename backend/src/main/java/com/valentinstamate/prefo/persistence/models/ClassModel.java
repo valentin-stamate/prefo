@@ -1,4 +1,4 @@
-package com.valentinstamate.prefo.persistence;
+package com.valentinstamate.prefo.persistence.models;
 
 import com.valentinstamate.prefo.persistence.consts.ClassPackage;
 import jakarta.persistence.*;
