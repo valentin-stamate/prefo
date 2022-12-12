@@ -18,9 +18,23 @@ public class UserRepository extends DataRepository<UserModel, Long> {
     private EntityManager em;
 
     public List<UserModel> allUsersExcept(Long id) {
-        return em.createQuery("SELECT u FROM UserModel u WHERE u.id <> :id", UserModel.class)
-                .setParameter("id", id)
-                .getResultList();
+        try {
+            return em.createQuery("SELECT u FROM UserModel u WHERE u.id <> :id", UserModel.class)
+                    .setParameter("id", id)
+                    .getResultList();
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public UserModel findByUsername(String username) {
+        try {
+            return em.createQuery("SELECT U FROM UserModel u WHERE u.username = :username", UserModel.class)
+                    .setParameter("username", username)
+                    .getSingleResult();
+        } catch (Exception e) {
+            return null;
+        }
     }
 
 }

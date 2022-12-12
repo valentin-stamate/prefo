@@ -13,12 +13,14 @@ import java.util.Base64;
 import java.util.Date;
 import java.util.Map;
 
-public abstract class JwtService {
+public class JwtService {
 
     private final static String SECRET = "123456789qwe";
     private final static Algorithm ALGORITHM = Algorithm.HMAC256(JwtService.SECRET);
     private final static String ISSUER = "auth0";
     private final static long TOKEN_EXPIRATION_TIME = 1000L * 3600 * 24; // 24H
+
+    private JwtService() { }
 
     public static String sign(final Map<String, Object> payload) {
         Date expirationDate = new Date(new Date().getTime() + TOKEN_EXPIRATION_TIME); // Current Time + Expiration Time

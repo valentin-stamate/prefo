@@ -1,6 +1,6 @@
 package com.valentinstamate.prefobackend.filters;
 
-import com.valentinstamate.prefobackend.filters.binding.AdminAuthenticated;
+import com.valentinstamate.prefobackend.filters.binding.UserAuthenticated;
 import com.valentinstamate.prefobackend.models.ResponseMessage;
 import com.valentinstamate.prefobackend.models.UserJwtPayload;
 import com.valentinstamate.prefobackend.persistence.consts.UserType;
@@ -16,14 +16,13 @@ import jakarta.ws.rs.container.ContainerResponseContext;
 import jakarta.ws.rs.container.ContainerResponseFilter;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.ext.Provider;
-
 import java.io.IOException;
 import java.util.Map;
 
-@AdminAuthenticated
+@UserAuthenticated
 @Provider
 @Priority(Priorities.AUTHORIZATION)
-public class AdminFilter implements ContainerRequestFilter, ContainerResponseFilter {
+public class UserFilter implements ContainerRequestFilter, ContainerResponseFilter {
 
     @Inject
     private UserRepository userRepository;
@@ -46,7 +45,7 @@ public class AdminFilter implements ContainerRequestFilter, ContainerResponseFil
 
         UserJwtPayload userPayload = UserJwtPayloadService.getUser(payload);
 
-        if (userPayload.getUserType().equals(UserType.ADMIN)) {
+        if (userPayload.getUserType().equals(UserType.USER)) {
             requestContext.abortWith(Response.status(Response.Status.NOT_FOUND).entity(ResponseMessage.NOT_AUTHORIZED).build());
             return;
         }
