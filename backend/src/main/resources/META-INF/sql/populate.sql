@@ -1,0 +1,3 @@
+INSERT INTO users (username, fullname, email, password, usertype) VALUES ('valstam', 'STAMATE D. Valentin', 'stamatevalentin125@gmail.com', '123456789', 'ADMIN');
+INSERT INTO users (username, fullname, email, password, usertype) VALUES ('cfrasinaru', 'FRASINARU CRISTIAN', 'cfrasinaru@gmail.com', '123456789', 'ADMIN');
+INSERT INTO users (username, fullname, email, password, usertype) VALUES ('user', 'user', 'user@gmail.com', '123456789', 'USER');

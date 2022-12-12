@@ -2,27 +2,78 @@ package com.valentinstamate.prefobackend.persistence.models;
 
 import com.valentinstamate.prefobackend.persistence.consts.ClassPackage;
 import jakarta.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "classes")
 public class ClassModel {
 
-    @Id private Long id;
-    @Column
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @Column(unique = true, nullable = false)
     private String className;
-    @Column
+    @Column(nullable = false)
     private String shortName;
-    @Column
+    @Column(nullable = false)
     private int year;
-    @Column
+    @Column(nullable = false)
     private int semester;
-    @Column
+    @Column(nullable = false)
     private String holder;
-    @Column
+    @Column(nullable = false)
     private String courseLink;
-    @Column
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private ClassPackage classPackage;
+
+    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "_class")
+    private Set<PreferenceModel> preferenceModels;
+
+    public ClassModel() {}
+
+    public ClassModel(Long id, String className, String shortName, int year, int semester, String holder,
+                      String courseLink, ClassPackage classPackage, Set<PreferenceModel> preferenceModels) {
+        this.id = id;
+        this.className = className;
+        this.shortName = shortName;
+        this.year = year;
+        this.semester = semester;
+        this.holder = holder;
+        this.courseLink = courseLink;
+        this.classPackage = classPackage;
+        this.preferenceModels = preferenceModels;
+    }
+
+    public ClassModel(Long id, String className, String shortName, int year, int semester, String holder,
+                      String courseLink, ClassPackage classPackage) {
+        this.id = id;
+        this.className = className;
+        this.shortName = shortName;
+        this.year = year;
+        this.semester = semester;
+        this.holder = holder;
+        this.courseLink = courseLink;
+        this.classPackage = classPackage;
+    }
+
+    public ClassModel(String className, String shortName, int year, int semester, String holder, String courseLink, ClassPackage classPackage) {
+        this.className = className;
+        this.shortName = shortName;
+        this.year = year;
+        this.semester = semester;
+        this.holder = holder;
+        this.courseLink = courseLink;
+        this.classPackage = classPackage;
+    }
+
+    public Set<PreferenceModel> getUserClasses() {
+        return preferenceModels;
+    }
+
+    public void setUserClasses(Set<PreferenceModel> preferenceModels) {
+        this.preferenceModels = preferenceModels;
+    }
 
     public Long getId() {
         return id;
