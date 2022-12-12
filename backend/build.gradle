@@ -3,7 +3,7 @@ plugins {
     id 'war'
 }
 
-group 'com.valentinstamate.prefo'
+group 'com.valentinstamate'
 version '1.0-SNAPSHOT'
 
 repositories {
@@ -11,7 +11,7 @@ repositories {
 }
 
 ext {
-    junitVersion = '5.9.0'
+    junitVersion = '5.9.1'
     poiVersion = '5.2.2'
 }
 
@@ -23,7 +23,7 @@ tasks.withType(JavaCompile) {
 }
 
 dependencies {
-    compileOnly 'jakarta.platform:jakarta.jakartaee-api:10.0.0'
+    compileOnly('jakarta.platform:jakarta.jakartaee-api:10.0.0')
     implementation 'org.apache.logging.log4j:log4j-core:2.19.0'
     implementation 'org.postgresql:postgresql:42.5.1'
     implementation 'com.auth0:java-jwt:4.2.1'

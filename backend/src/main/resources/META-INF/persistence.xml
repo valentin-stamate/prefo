@@ -5,7 +5,7 @@
              version="3.0">
 
     <persistence-unit name="default">
-        <jta-data-source>jdbc/prefo</jta-data-source>
+        <jta-data-source>jdbc/_prefo</jta-data-source>
 
         <properties>
             <property name="jakarta.persistence.schema-generation.database.action" value="drop-and-create"/>
