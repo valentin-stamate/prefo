@@ -1,7 +1,8 @@
 # PrefO - Backend
 
 ## Configuration
-* GlassFish 6.2.5
+* Payara 6
+* Jakarta 10
 * Java 17
 * Postgres
 
