@@ -19,6 +19,7 @@ import jakarta.ws.rs.ext.Provider;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.Objects;
 
 @AdminAuthenticated
 @Provider
@@ -44,10 +45,10 @@ public class AdminFilter implements ContainerRequestFilter, ContainerResponseFil
             return;
         }
 
-        UserJwtPayload userPayload = UserJwtPayloadService.getUser(payload);
+        var userPayload = UserJwtPayloadService.getUser(payload);
 
-        if (userPayload.getUserType().equals(UserType.ADMIN)) {
-            requestContext.abortWith(Response.status(Response.Status.NOT_FOUND).entity(ResponseMessage.NOT_AUTHORIZED).build());
+        if (!Objects.equals(userPayload.getUserType(), UserType.ADMIN)) {
+            requestContext.abortWith(Response.status(Response.Status.NOT_ACCEPTABLE).entity(ResponseMessage.NOT_AUTHORIZED).build());
             return;
         }
 

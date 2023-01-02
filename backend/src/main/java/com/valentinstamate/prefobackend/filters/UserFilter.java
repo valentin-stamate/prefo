@@ -18,6 +18,7 @@ import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.ext.Provider;
 import java.io.IOException;
 import java.util.Map;
+import java.util.Objects;
 
 @UserAuthenticated
 @Provider
@@ -43,9 +44,9 @@ public class UserFilter implements ContainerRequestFilter, ContainerResponseFilt
             return;
         }
 
-        UserJwtPayload userPayload = UserJwtPayloadService.getUser(payload);
+        var userPayload = UserJwtPayloadService.getUser(payload);
 
-        if (userPayload.getUserType().equals(UserType.USER)) {
+        if (!Objects.equals(userPayload.getUserType(), UserType.USER)) {
             requestContext.abortWith(Response.status(Response.Status.NOT_FOUND).entity(ResponseMessage.NOT_AUTHORIZED).build());
             return;
         }

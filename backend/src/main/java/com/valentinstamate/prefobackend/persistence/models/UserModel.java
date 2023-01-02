@@ -38,6 +38,13 @@ public class UserModel implements Serializable {
         this.userType = userType;
     }
 
+    public UserModel(String username, String fullName, String email, String password) {
+        this.username = username;
+        this.fullName = fullName;
+        this.email = email;
+        this.password = password;
+    }
+
     public UserModel(Long id, String username, String fullName, String email, String password, UserType userType) {
         this.id = id;
         this.username = username;

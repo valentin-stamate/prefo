@@ -1,5 +1,6 @@
 package com.valentinstamate.prefobackend.persistence.repository;
 
+import com.valentinstamate.prefobackend.persistence.consts.UserType;
 import com.valentinstamate.prefobackend.persistence.models.ClassModel;
 import com.valentinstamate.prefobackend.persistence.models.UserModel;
 import com.valentinstamate.prefobackend.persistence.repository.generic.DataRepository;
@@ -34,6 +35,16 @@ public class UserRepository extends DataRepository<UserModel, Long> {
                     .getSingleResult();
         } catch (Exception e) {
             return null;
+        }
+    }
+
+    public void removeAllNonAdminUsers() {
+        try {
+            em.createQuery("DELETE FROM UserModel WHERE userType = :user")
+                    .setParameter("user", UserType.USER)
+                    .executeUpdate();
+        } catch (Exception e) {
+            throw e;
         }
     }
 

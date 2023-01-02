@@ -25,26 +25,11 @@ public class VisitorController {
 
             return Response.ok().entity(result).build();
         } catch (ServiceException e) {
-            return Response.status(e.getStatus()).entity(e.getMessage()).build();
+            return Response
+                    .status(e.getStatus())
+                    .entity(e.getMessage())
+                    .build();
         }
     }
-
-//    @POST
-//    @Path("/login")
-//    @Consumes(MediaType.APPLICATION_JSON)
-//    @Produces(MediaType.TEXT_PLAIN)
-//    public Response login(LoginUserBody requestBody) {
-//
-//        try {
-//            Object result = userService.loginUser(
-//                    requestBody.getUsername(),
-//                    requestBody.getPassword()
-//            );
-//
-//            return Response.ok(result).build();
-//        } catch (ServiceException e) {
-//            return Response.status(e.getStatus()).entity(e.getMessage()).build();
-//        }
-//    }
 
 }

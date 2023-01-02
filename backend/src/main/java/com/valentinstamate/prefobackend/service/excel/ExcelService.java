@@ -6,10 +6,9 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.util.*;
 
-@ApplicationScoped
 public class ExcelService {
 
-    public Map<Integer, List<Object>> readSheet(Workbook workbook, int sheetNumber) {
+    public static Map<Integer, List<Object>> readSheet(Workbook workbook, int sheetNumber) {
         Sheet sheet = workbook.getSheetAt(sheetNumber);
 
         Map<Integer, List<Object>> data = new HashMap<>();
@@ -50,7 +49,7 @@ public class ExcelService {
         return data;
     }
 
-    public Workbook createSheet(Map<Integer, List<Object>> data, String sheetName) {
+    public static Workbook createSheet(Map<Integer, List<Object>> data, String sheetName) {
         Workbook workbook = new XSSFWorkbook();
 
         Sheet sheet = workbook.createSheet(sheetName);
@@ -83,6 +82,51 @@ public class ExcelService {
         }
 
         return workbook;
+    }
+
+    public static int parseNumericCol(Object value) {
+        if (value instanceof Integer) {
+            return (Integer) value;
+        }
+
+        if (value instanceof Double) {
+            return ((Double) value).intValue();
+        }
+
+        if (value instanceof String) {
+            try {
+                return Integer.parseInt((String) value);
+            } catch (Exception e) {
+                return 0;
+            }
+        }
+
+        return 0;
+    }
+
+    public static Map<Integer, List<Object>> filterInvalidRows(Map<Integer, List<Object>> data) {
+        var filteredData = new HashMap<Integer, List<Object>>();
+
+        var row = 1;
+        for (var entry : data.entrySet()) {
+            var key = entry.getKey();
+            var value = entry.getValue();
+
+            var found = false;
+
+            for (var e : value) {
+                if (e.equals("")) {
+                    found = true;
+                    break;
+                }
+            }
+
+            if (!found) {
+                filteredData.put(row++, value);
+            }
+        }
+
+        return filteredData;
     }
 
 }

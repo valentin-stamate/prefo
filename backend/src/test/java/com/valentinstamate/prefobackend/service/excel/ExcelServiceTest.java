@@ -14,12 +14,10 @@ class ExcelServiceTest {
 
     @Test
     public void testReadingExcelFile() throws IOException {
-        ExcelService excelService = new ExcelService();
-
         FileInputStream file = new FileInputStream(DEMO_EXCEL_PATH);
         Workbook workbook = new XSSFWorkbook(file);
 
-        var data = excelService.readSheet(workbook, 0);
+        var data = ExcelService.readSheet(workbook, 0);
 
         for (var entry : data.entrySet()) {
             for (var item : entry.getValue()) {
@@ -34,14 +32,12 @@ class ExcelServiceTest {
 
     @Test
     public void testCreatingExcelFile() throws IOException {
-        ExcelService excelService = new ExcelService();
-
         FileInputStream file = new FileInputStream(DEMO_EXCEL_PATH);
         Workbook workbook = new XSSFWorkbook(file);
 
-        var data = excelService.readSheet(workbook, 0);
+        var data = ExcelService.readSheet(workbook, 0);
 
-        Workbook newWorkbook = excelService.createSheet(data, "Test Sheet");
+        Workbook newWorkbook = ExcelService.createSheet(data, "Test Sheet");
 
         FileOutputStream outputStream = new FileOutputStream(DEMO_NEW_EXCEL_PATH);
         newWorkbook.write(outputStream);
