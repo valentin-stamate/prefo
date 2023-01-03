@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class ClassExcelService extends ExcelRowService<ClassExcelRowMapping> {
+public class PackageExcelService extends ExcelRowService<PackageExcelRowMapping> {
     private final List<String> header = List.of(
-            "Cod", "Prescurtare", "Nume", "An", "Semestru", "Titular", "Site", "Packet", "Credite"
+            "Packet", "An", "Semestru", "Credite"
     );
 
     @Override
-    public ClassExcelRowMapping of(List<Object> row) {
+    public PackageExcelRowMapping of(List<Object> row) {
         var cols = new ArrayList<>(Collections.nCopies(header.size(), (Object) ""));
 
         for (int i = 0; i < row.size(); i++) {
@@ -19,16 +19,11 @@ public class ClassExcelService extends ExcelRowService<ClassExcelRowMapping> {
             } catch (Exception e) { }
         }
 
-        return new ClassExcelRowMapping(
+        return new PackageExcelRowMapping(
                 cols.get(0),
                 cols.get(1),
                 cols.get(2),
-                cols.get(3),
-                cols.get(4),
-                cols.get(5),
-                cols.get(6),
-                cols.get(7),
-                cols.get(8)
+                cols.get(3)
         );
     }
 

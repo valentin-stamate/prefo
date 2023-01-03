@@ -1,6 +1,5 @@
 package com.valentinstamate.prefobackend.persistence.models;
 
-import com.valentinstamate.prefobackend.persistence.consts.ClassPackage;
 import jakarta.persistence.*;
 import java.util.Set;
 
@@ -24,8 +23,7 @@ public class ClassModel {
     @Column(nullable = false)
     private String courseLink;
     @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private ClassPackage classPackage;
+    private String classPackage;
 
     @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "_class")
     private Set<PreferenceModel> preferenceModels;
@@ -33,7 +31,7 @@ public class ClassModel {
     public ClassModel() {}
 
     public ClassModel(Long id, String className, String shortName, int year, int semester, String holder,
-                      String courseLink, ClassPackage classPackage, Set<PreferenceModel> preferenceModels) {
+                      String courseLink, String classPackage, Set<PreferenceModel> preferenceModels) {
         this.id = id;
         this.className = className;
         this.shortName = shortName;
@@ -46,7 +44,7 @@ public class ClassModel {
     }
 
     public ClassModel(Long id, String className, String shortName, int year, int semester, String holder,
-                      String courseLink, ClassPackage classPackage) {
+                      String courseLink, String classPackage) {
         this.id = id;
         this.className = className;
         this.shortName = shortName;
@@ -57,7 +55,7 @@ public class ClassModel {
         this.classPackage = classPackage;
     }
 
-    public ClassModel(String className, String shortName, int year, int semester, String holder, String courseLink, ClassPackage classPackage) {
+    public ClassModel(String className, String shortName, int year, int semester, String holder, String courseLink, String classPackage) {
         this.className = className;
         this.shortName = shortName;
         this.year = year;
@@ -131,11 +129,11 @@ public class ClassModel {
         this.courseLink = courseLink;
     }
 
-    public ClassPackage getClassPackage() {
+    public String getClassPackage() {
         return classPackage;
     }
 
-    public void setClassPackage(ClassPackage classPackage) {
+    public void setClassPackage(String classPackage) {
         this.classPackage = classPackage;
     }
 }

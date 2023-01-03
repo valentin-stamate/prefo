@@ -3,10 +3,9 @@ package com.valentinstamate.prefobackend.service;
 import com.valentinstamate.prefobackend.models.ResponseMessage;
 import com.valentinstamate.prefobackend.persistence.models.UserModel;
 import com.valentinstamate.prefobackend.persistence.repository.UserRepository;
-import com.valentinstamate.prefobackend.service.excel.mapping.ClassExcelRowMapping;
-import com.valentinstamate.prefobackend.service.excel.mapping.ClassExcelService;
-import com.valentinstamate.prefobackend.service.excel.mapping.StudentExcelRowMapping;
+import com.valentinstamate.prefobackend.service.excel.mapping.*;
 import com.valentinstamate.prefobackend.service.excel.parser.ClassExcelParser;
+import com.valentinstamate.prefobackend.service.excel.parser.PackageExcelParser;
 import com.valentinstamate.prefobackend.service.excel.parser.StudentExcelParser;
 import com.valentinstamate.prefobackend.service.exception.ServiceException;
 import com.valentinstamate.prefobackend.service.jwt.JwtService;
@@ -23,6 +22,7 @@ public class UserService {
     @Inject private UserRepository userRepository;
     @Inject private StudentExcelParser studentExcelParser;
     @Inject private ClassExcelParser classExcelService;
+    @Inject private PackageExcelParser packageExcelParser;
 
     public String checkCredentialsForLogin(String username, String password) throws ServiceException {
         var existingUser = this.userRepository.findByUsername(username);
@@ -84,6 +84,27 @@ public class UserService {
 
         try {
             rows = classExcelService.parse(buffer);
+        } catch (Exception e) {
+            System.out.println(e);
+            throw new ServiceException(e.getMessage(), Response.Status.NOT_ACCEPTABLE);
+        }
+
+        rows.forEach(System.out::println);
+    }
+
+    public void importPackages(InputStream fileStream) throws ServiceException {
+        byte[] buffer;
+
+        try {
+            buffer = fileStream.readAllBytes();
+        } catch (Exception e) {
+            throw new ServiceException(ResponseMessage.CANNOT_READ_FILE, Response.Status.BAD_REQUEST);
+        }
+
+        List<PackageExcelRowMapping> rows;
+
+        try {
+            rows = packageExcelParser.parse(buffer);
         } catch (Exception e) {
             System.out.println(e);
             throw new ServiceException(e.getMessage(), Response.Status.NOT_ACCEPTABLE);
