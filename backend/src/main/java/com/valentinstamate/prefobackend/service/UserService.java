@@ -1,7 +1,11 @@
 package com.valentinstamate.prefobackend.service;
 
 import com.valentinstamate.prefobackend.models.ResponseMessage;
+import com.valentinstamate.prefobackend.persistence.models.ClassModel;
+import com.valentinstamate.prefobackend.persistence.models.PackageModel;
 import com.valentinstamate.prefobackend.persistence.models.UserModel;
+import com.valentinstamate.prefobackend.persistence.repository.ClassRepository;
+import com.valentinstamate.prefobackend.persistence.repository.PackageRepository;
 import com.valentinstamate.prefobackend.persistence.repository.UserRepository;
 import com.valentinstamate.prefobackend.service.excel.mapping.*;
 import com.valentinstamate.prefobackend.service.excel.parser.ClassExcelParser;
@@ -20,6 +24,8 @@ import java.util.List;
 public class UserService {
 
     @Inject private UserRepository userRepository;
+    @Inject private ClassRepository classRepository;
+    @Inject private PackageRepository packageRepository;
     @Inject private StudentExcelParser studentExcelParser;
     @Inject private ClassExcelParser classExcelService;
     @Inject private PackageExcelParser packageExcelParser;
@@ -89,7 +95,12 @@ public class UserService {
             throw new ServiceException(e.getMessage(), Response.Status.NOT_ACCEPTABLE);
         }
 
-        rows.forEach(System.out::println);
+        classRepository.removeAll();
+
+        for (var row : rows) {
+            var newClass = new ClassModel(row.name, row.shortName, row.year, row.semester, row.owner, row.site, row.classPackage);
+            classRepository.persist(newClass);
+        }
     }
 
     public void importPackages(InputStream fileStream) throws ServiceException {
@@ -110,7 +121,12 @@ public class UserService {
             throw new ServiceException(e.getMessage(), Response.Status.NOT_ACCEPTABLE);
         }
 
-        rows.forEach(System.out::println);
+        packageRepository.removeAll();
+
+        for (var row : rows) {
+            var newPackage = new PackageModel(row.packageName, row.year, row.semester);
+            packageRepository.persist(newPackage);
+        }
     }
 
 }

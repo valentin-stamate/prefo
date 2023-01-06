@@ -12,4 +12,8 @@ import jakarta.transaction.Transactional;
 public class PackageRepository extends DataRepository<PackageModel, Long> {
     @PersistenceContext(name = "default")
     private EntityManager em;
+
+    public PackageRepository() {
+        super(PackageModel.class);
+    }
 }

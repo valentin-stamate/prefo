@@ -18,8 +18,6 @@ public abstract class DataRepository<T, ID extends Serializable> implements Seri
         this.entityClass = entityClass;
     }
 
-    protected DataRepository() { }
-
     @PostConstruct
     protected void init() { }
 
@@ -45,6 +43,11 @@ public abstract class DataRepository<T, ID extends Serializable> implements Seri
         }
 
         em.remove(entity);
+    }
+
+    public void removeAll() {
+        String qlString = "DELETE FROM " + entityClass.getSimpleName();
+        em.createQuery(qlString, entityClass).executeUpdate();
     }
 
     public T refresh(T entity) {

@@ -14,4 +14,8 @@ public class ClassRepository extends DataRepository<ClassModel, Long> {
     @PersistenceContext(name = "default")
     private EntityManager em;
 
+    public ClassRepository() {
+        super(ClassModel.class);
+    }
+
 }

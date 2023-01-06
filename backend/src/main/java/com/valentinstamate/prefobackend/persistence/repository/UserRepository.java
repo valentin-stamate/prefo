@@ -18,6 +18,10 @@ public class UserRepository extends DataRepository<UserModel, Long> {
     @PersistenceContext(name = "default")
     private EntityManager em;
 
+    public UserRepository() {
+        super(UserModel.class);
+    }
+
     public List<UserModel> allUsersExcept(Long id) {
         try {
             return em.createQuery("SELECT u FROM UserModel u WHERE u.id <> :id", UserModel.class)
