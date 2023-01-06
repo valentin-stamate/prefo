@@ -18,6 +18,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.core.Response;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 @ApplicationScoped
@@ -129,4 +130,11 @@ public class UserService {
         }
     }
 
+    public List<PackageModel> getPackages() throws ServiceException {
+        return packageRepository.findAll();
+    }
+
+    public List<ClassModel> getClassesByPackage(String packageName) throws ServiceException {
+        return classRepository.findClassesByPackage(packageName);
+    }
 }

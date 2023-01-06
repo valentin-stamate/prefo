@@ -7,6 +7,9 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @ApplicationScoped
 @Transactional
 public class ClassRepository extends DataRepository<ClassModel, Long> {
@@ -16,6 +19,16 @@ public class ClassRepository extends DataRepository<ClassModel, Long> {
 
     public ClassRepository() {
         super(ClassModel.class);
+    }
+
+    public List<ClassModel> findClassesByPackage(String packageName) {
+        try {
+            return em.createQuery("SELECT c FROM ClassModel c WHERE c.classPackage = :package", ClassModel.class)
+                    .setParameter("package", packageName)
+                    .getResultList();
+        } catch (Exception e) {
+            throw e;
+        }
     }
 
 }

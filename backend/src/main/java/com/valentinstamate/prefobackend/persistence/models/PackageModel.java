@@ -48,4 +48,20 @@ public class PackageModel {
     public void setPackageName(String packageName) {
         this.packageName = packageName;
     }
+
+    public Integer getYear() {
+        return year;
+    }
+
+    public void setYear(Integer year) {
+        this.year = year;
+    }
+
+    public Integer getSemester() {
+        return semester;
+    }
+
+    public void setSemester(Integer semester) {
+        this.semester = semester;
+    }
 }
