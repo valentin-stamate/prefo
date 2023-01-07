@@ -2,9 +2,11 @@ package com.valentinstamate.prefobackend.persistence.models;
 
 import jakarta.persistence.*;
 
+import java.io.Serializable;
+
 @Entity
 @Table(name = "packages")
-public class PackageModel {
+public class PackageModel implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

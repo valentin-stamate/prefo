@@ -1,11 +1,15 @@
 package com.valentinstamate.prefobackend.persistence.models;
 
 import jakarta.persistence.*;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @Entity
 @Table(name = "classes")
-public class ClassModel {
+public class ClassModel implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,12 +30,12 @@ public class ClassModel {
     private String classPackage;
 
     @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "_class")
-    private Set<PreferenceModel> preferenceModels;
+    private List<PreferenceModel> preferenceModels = new ArrayList<>();
 
     public ClassModel() {}
 
     public ClassModel(Long id, String className, String shortName, int year, int semester, String holder,
-                      String courseLink, String classPackage, Set<PreferenceModel> preferenceModels) {
+                      String courseLink, String classPackage, List<PreferenceModel> preferenceModels) {
         this.id = id;
         this.className = className;
         this.shortName = shortName;
@@ -65,11 +69,11 @@ public class ClassModel {
         this.classPackage = classPackage;
     }
 
-    public Set<PreferenceModel> getUserClasses() {
+    public List<PreferenceModel> getUserClasses() {
         return preferenceModels;
     }
 
-    public void setUserClasses(Set<PreferenceModel> preferenceModels) {
+    public void setUserClasses(List<PreferenceModel> preferenceModels) {
         this.preferenceModels = preferenceModels;
     }
 
@@ -135,5 +139,39 @@ public class ClassModel {
 
     public void setClassPackage(String classPackage) {
         this.classPackage = classPackage;
+    }
+
+    public List<PreferenceModel> getPreferenceModels() {
+        return preferenceModels;
+    }
+
+    public void setPreferenceModels(List<PreferenceModel> preferenceModels) {
+        this.preferenceModels = preferenceModels;
+    }
+
+    public boolean removeUserPreference(PreferenceModel preferenceModel) {
+        return this.preferenceModels.remove(preferenceModel);
+    }
+
+    public void addUserPreference(PreferenceModel preferenceModel) {
+        this.preferenceModels.add(preferenceModel);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ClassModel that = (ClassModel) o;
+
+        if (!className.equals(that.className)) return false;
+        return shortName.equals(that.shortName);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = className.hashCode();
+        result = 31 * result + shortName.hashCode();
+        return result;
     }
 }

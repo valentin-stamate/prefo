@@ -10,4 +10,6 @@ public interface ResponseMessage {
     String CANNOT_READ_FILE = "Cannot read file stream.";
     String INVALID_EXCEL_HEADER = "Invalid excel header.";
     String ERROR_PARSING_EXCEL = "Error parsing excel.";
+    String CLASS_ALREADY_ASSOCIATED = "The class is already associated with the user.";
+    String SOMETHING_WENT_WRONG = "Something went wrong.";
 }

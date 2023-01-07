@@ -3,8 +3,8 @@ package com.valentinstamate.prefobackend.persistence.models;
 import com.valentinstamate.prefobackend.persistence.consts.UserType;
 import jakarta.persistence.*;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -25,8 +25,8 @@ public class UserModel implements Serializable {
     @Enumerated(EnumType.STRING)
     private UserType userType = UserType.USER;
 
-    @OneToMany(cascade = CascadeType.REMOVE)
-    private Set<PreferenceModel> preferenceModels;
+    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "user")
+    private List<PreferenceModel> preferenceModels = new ArrayList<>();
 
     public UserModel() { }
 
@@ -45,36 +45,29 @@ public class UserModel implements Serializable {
         this.password = password;
     }
 
-    public UserModel(Long id, String username, String fullName, String email, String password, UserType userType) {
+    public UserModel(Long id, String username, String fullName, String email, String password, UserType userType, List<PreferenceModel> preferenceModels) {
         this.id = id;
         this.username = username;
         this.fullName = fullName;
         this.email = email;
         this.password = password;
         this.userType = userType;
+        this.preferenceModels = preferenceModels;
     }
 
-    public Set<PreferenceModel> getUserClasses() {
+    public List<PreferenceModel> getUserClasses() {
         return preferenceModels;
     }
 
-    public void addUserClass(PreferenceModel preferenceModel) {
-        if (this.preferenceModels == null) {
-            this.preferenceModels = new HashSet<>();
-        }
-
+    public void addUserPreference(PreferenceModel preferenceModel) {
         this.preferenceModels.add(preferenceModel);
     }
 
-    public void removeUserClass(PreferenceModel preferenceModel) {
-        if (this.preferenceModels == null) {
-            this.preferenceModels = new HashSet<>();
-        }
-
+    public void removeUserPreference(PreferenceModel preferenceModel) {
         this.preferenceModels.remove(preferenceModel);
     }
 
-    public void setUserClasses(Set<PreferenceModel> preferenceModels) {
+    public void setUserClasses(List<PreferenceModel> preferenceModels) {
         this.preferenceModels = preferenceModels;
     }
 
@@ -124,5 +117,31 @@ public class UserModel implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public List<PreferenceModel> getPreferenceModels() {
+        return preferenceModels;
+    }
+
+    public void setPreferenceModels(List<PreferenceModel> preferenceModels) {
+        this.preferenceModels = preferenceModels;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        UserModel userModel = (UserModel) o;
+
+        if (!username.equals(userModel.username)) return false;
+        return email.equals(userModel.email);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = username.hashCode();
+        result = 31 * result + email.hashCode();
+        return result;
     }
 }

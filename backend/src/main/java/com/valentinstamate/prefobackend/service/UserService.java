@@ -3,9 +3,11 @@ package com.valentinstamate.prefobackend.service;
 import com.valentinstamate.prefobackend.models.ResponseMessage;
 import com.valentinstamate.prefobackend.persistence.models.ClassModel;
 import com.valentinstamate.prefobackend.persistence.models.PackageModel;
+import com.valentinstamate.prefobackend.persistence.models.PreferenceModel;
 import com.valentinstamate.prefobackend.persistence.models.UserModel;
 import com.valentinstamate.prefobackend.persistence.repository.ClassRepository;
 import com.valentinstamate.prefobackend.persistence.repository.PackageRepository;
+import com.valentinstamate.prefobackend.persistence.repository.PreferenceRepository;
 import com.valentinstamate.prefobackend.persistence.repository.UserRepository;
 import com.valentinstamate.prefobackend.service.excel.mapping.*;
 import com.valentinstamate.prefobackend.service.excel.parser.ClassExcelParser;
@@ -20,6 +22,7 @@ import jakarta.ws.rs.core.Response;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class UserService {
@@ -27,6 +30,7 @@ public class UserService {
     @Inject private UserRepository userRepository;
     @Inject private ClassRepository classRepository;
     @Inject private PackageRepository packageRepository;
+    @Inject private PreferenceRepository preferenceRepository;
     @Inject private StudentExcelParser studentExcelParser;
     @Inject private ClassExcelParser classExcelService;
     @Inject private PackageExcelParser packageExcelParser;
@@ -96,7 +100,12 @@ public class UserService {
             throw new ServiceException(e.getMessage(), Response.Status.NOT_ACCEPTABLE);
         }
 
+        preferenceRepository.removeAll();
         classRepository.removeAll();
+
+        preferenceRepository.clearCache();
+        classRepository.clearCache();
+        userRepository.clearCache();
 
         for (var row : rows) {
             var newClass = new ClassModel(row.name, row.shortName, row.year, row.semester, row.owner, row.site, row.classPackage);
@@ -136,5 +145,62 @@ public class UserService {
 
     public List<ClassModel> getClassesByPackage(String packageName) throws ServiceException {
         return classRepository.findClassesByPackage(packageName);
+    }
+
+    public List<ClassModel> getUserClasses(String username) throws ServiceException {
+        var user = userRepository.findByUsername(username);
+        return user.getPreferenceModels()
+                .stream().map(item -> {
+                    var classItem = item.get_class();
+                    classItem.setPreferenceModels(new ArrayList<>());
+                    return classItem;
+                })
+                .collect(Collectors.toList());
+    }
+
+    public void associateClassToUser(String username, int classId, int priority) throws ServiceException {
+        var userModel = userRepository.findByUsername(username);
+        var classModel = classRepository.findById((long) classId);
+
+        if (classModel == null) {
+            throw new ServiceException(ResponseMessage.NOT_FOUND, Response.Status.NOT_FOUND);
+        }
+
+        var existingPreference = preferenceRepository.findByUserAndClass(userModel, classModel);
+
+        if (existingPreference != null) {
+            throw new ServiceException(ResponseMessage.CLASS_ALREADY_ASSOCIATED, Response.Status.NOT_ACCEPTABLE);
+        }
+
+        var newPreference = new PreferenceModel(userModel, classModel, priority);
+
+        userModel.addUserPreference(newPreference);
+        classModel.addUserPreference(newPreference);
+
+        preferenceRepository.persist(newPreference);
+        userRepository.update(userModel);
+        classRepository.update(classModel);
+    }
+
+    public void removeUserClass(String username, int classId) throws ServiceException {
+        var userModel = userRepository.findByUsername(username);
+        var classModel = classRepository.findById((long) classId);
+
+        if (classModel == null) {
+            throw new ServiceException(ResponseMessage.NOT_FOUND, Response.Status.NOT_FOUND);
+        }
+
+        var existingPreference = preferenceRepository.findByUserAndClass(userModel, classModel);
+
+        if (existingPreference == null) {
+            throw new ServiceException(ResponseMessage.NOT_FOUND, Response.Status.NOT_FOUND);
+        }
+
+        userModel.removeUserPreference(existingPreference);
+        classModel.removeUserPreference(existingPreference);
+
+        preferenceRepository.remove(existingPreference);
+        userRepository.update(userModel);
+        classRepository.update(classModel);
     }
 }

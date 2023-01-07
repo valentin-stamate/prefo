@@ -23,3 +23,6 @@
 * https://stackoverflow.com/a/48075960/10805602
 * https://thorben-janssen.com/jpa-persistence-xml/
 * https://www.baeldung.com/jpa-join-column
+* https://stackoverflow.com/a/37259358/10805602
+* https://vladmihalcea.com/the-best-way-to-map-a-onetomany-association-with-jpa-and-hibernate/
+* https://stackoverflow.com/a/13261411/10805602

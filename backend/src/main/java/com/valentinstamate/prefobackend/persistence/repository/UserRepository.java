@@ -1,7 +1,6 @@
 package com.valentinstamate.prefobackend.persistence.repository;
 
 import com.valentinstamate.prefobackend.persistence.consts.UserType;
-import com.valentinstamate.prefobackend.persistence.models.ClassModel;
 import com.valentinstamate.prefobackend.persistence.models.UserModel;
 import com.valentinstamate.prefobackend.persistence.repository.generic.DataRepository;
 import jakarta.enterprise.context.ApplicationScoped;
