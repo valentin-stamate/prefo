@@ -51,13 +51,13 @@ public class UserController {
     }
 
     @GET
-    @Path("/associate-class")
+    @Path("/user-preference")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getUserClasses(@Context HttpHeaders headers) {
         var jwtPayload = UserJwtPayloadService.getUserPayloadFromHeaders(headers);
 
         try {
-            var result = userService.getUserClasses(jwtPayload.getUsername());
+            var result = userService.getUserPreferences(jwtPayload.getUsername());
 
             return Response.ok(result).build();
         } catch (ServiceException e) {
@@ -69,12 +69,12 @@ public class UserController {
     }
 
     @POST
-    @Path("/associate-class")
+    @Path("/user-preference")
     public Response associateUserClass(@Context HttpHeaders headers, @QueryParam("id") int classId, @QueryParam("priority") int priority) {
         var jwtPayload = UserJwtPayloadService.getUserPayloadFromHeaders(headers);
 
         try {
-            userService.associateClassToUser(jwtPayload.getUsername(), classId, priority);
+            userService.addUserPreferene(jwtPayload.getUsername(), classId, priority);
 
             return Response.ok().build();
         } catch (ServiceException e) {
@@ -86,12 +86,12 @@ public class UserController {
     }
 
     @DELETE
-    @Path("/associate-class")
+    @Path("/user-preference")
     public Response removeUserClass(@Context HttpHeaders headers, @QueryParam("id") int classId) {
         var jwtPayload = UserJwtPayloadService.getUserPayloadFromHeaders(headers);
 
         try {
-            userService.removeUserClass(jwtPayload.getUsername(), classId);
+            userService.removeUserPreference(jwtPayload.getUsername(), classId);
 
             return Response.ok().build();
         } catch (ServiceException e) {

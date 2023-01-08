@@ -1,5 +1,6 @@
 package com.valentinstamate.prefobackend.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.valentinstamate.prefobackend.models.ResponseMessage;
 import com.valentinstamate.prefobackend.persistence.models.ClassModel;
 import com.valentinstamate.prefobackend.persistence.models.PackageModel;
@@ -149,18 +150,26 @@ public class UserService {
         return classRepository.findClassesByPackage(packageName);
     }
 
-    public List<ClassModel> getUserClasses(String username) throws ServiceException {
+    public List<Map<String, Object>> getUserPreferences(String username) throws ServiceException {
         var user = userRepository.findByUsername(username);
+
+        var objectMapper = new ObjectMapper();
+
         return user.getPreferenceModels()
                 .stream().map(item -> {
                     var classItem = item.get_class();
                     classItem.setPreferenceModels(new ArrayList<>());
-                    return classItem;
+
+                    Map<String, Object> map = objectMapper.convertValue(classItem, Map.class);
+                    map.put("priority", item.getPriority());
+                    map.put("completionDate", item.getCompletionDate());
+
+                    return map;
                 })
                 .collect(Collectors.toList());
     }
 
-    public void associateClassToUser(String username, int classId, int priority) throws ServiceException {
+    public void addUserPreferene(String username, int classId, int priority) throws ServiceException {
         var userModel = userRepository.findByUsername(username);
         var classModel = classRepository.findById((long) classId);
 
@@ -184,7 +193,7 @@ public class UserService {
         classRepository.update(classModel);
     }
 
-    public void removeUserClass(String username, int classId) throws ServiceException {
+    public void removeUserPreference(String username, int classId) throws ServiceException {
         var userModel = userRepository.findByUsername(username);
         var classModel = classRepository.findById((long) classId);
 

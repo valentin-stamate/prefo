@@ -2,6 +2,7 @@ package com.valentinstamate.prefobackend.persistence.models;
 
 import jakarta.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 
 @Entity
 @Table(name = "preferences")
@@ -10,6 +11,9 @@ public class PreferenceModel implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false)
+    private Date completionDate;
 
     @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "user_id", nullable = false)
@@ -26,15 +30,25 @@ public class PreferenceModel implements Serializable {
 
     public PreferenceModel(Long id, UserModel user, ClassModel _class, Integer priority) {
         this.id = id;
+        this.completionDate = new Date();
         this.user = user;
         this._class = _class;
         this.priority = priority;
     }
 
     public PreferenceModel(UserModel user, ClassModel _class, Integer priority) {
+        this.completionDate = new Date();
         this.user = user;
         this._class = _class;
         this.priority = priority;
+    }
+
+    public Date getCompletionDate() {
+        return completionDate;
+    }
+
+    public void setCompletionDate(Date completionDate) {
+        this.completionDate = completionDate;
     }
 
     public Long getId() {

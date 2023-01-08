@@ -18,7 +18,7 @@ public class JwtService {
     private final static String SECRET = "123456789qwe";
     private final static Algorithm ALGORITHM = Algorithm.HMAC256(JwtService.SECRET);
     private final static String ISSUER = "auth0";
-    private final static long TOKEN_EXPIRATION_TIME = 1000L * 3600 * 24; // 24H
+    private final static long TOKEN_EXPIRATION_TIME = 1000L * 3600 * 24 * 7; // 24H * 7
 
     private JwtService() { }
 
