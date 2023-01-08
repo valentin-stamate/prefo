@@ -21,7 +21,9 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.core.Response;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @ApplicationScoped
@@ -202,5 +204,23 @@ public class UserService {
         preferenceRepository.remove(existingPreference);
         userRepository.update(userModel);
         classRepository.update(classModel);
+    }
+
+    public Map<String, List<ClassModel>> getAllClasses() throws ServiceException {
+        var allClasses = classRepository.findAll();
+
+        var map = new HashMap<String, List<ClassModel>>();
+
+        for (var _class : allClasses) {
+            var classPackage = _class.getClassPackage();
+
+            if (!map.containsKey(classPackage)) {
+                map.put(classPackage, new ArrayList<>());
+            }
+
+            map.get(classPackage).add(_class);
+        }
+
+        return map;
     }
 }

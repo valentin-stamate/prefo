@@ -37,9 +37,9 @@ public class UserController {
     @GET
     @Path("/classes")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getClasses(@QueryParam("package") String packageName) {
+    public Response getClasses() {
         try {
-            var result = userService.getClassesByPackage(packageName);
+            var result = userService.getAllClasses();
 
             return Response.ok(result).build();
         } catch (ServiceException e) {
