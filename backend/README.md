@@ -26,3 +26,4 @@
 * https://stackoverflow.com/a/37259358/10805602
 * https://vladmihalcea.com/the-best-way-to-map-a-onetomany-association-with-jpa-and-hibernate/
 * https://stackoverflow.com/a/13261411/10805602
+* https://docs.payara.fish/community/docs/documentation/ecosystem/docker-images/server-image-overview.html
