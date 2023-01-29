@@ -36,22 +36,10 @@ public class AdminController {
     @POST
     @Path("/import-classes")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
-    public Response importClasses(@FormDataParam("file") InputStream fileStream) {
+    public Response importClasses(@FormDataParam("discipline") InputStream classesFileStream, @FormDataParam("packete") InputStream packagesFileStream) {
         try {
-            userService.importClasses(fileStream);
-
-            return Response.ok().build();
-        } catch (ServiceException e) {
-            return Response.status(e.getStatus()).entity(e.getMessage()).build();
-        }
-    }
-
-    @POST
-    @Path("/import-packages")
-    @Consumes(MediaType.MULTIPART_FORM_DATA)
-    public Response importPackages(@FormDataParam("file") InputStream fileStream) {
-        try {
-            userService.importPackages(fileStream);
+            userService.importPackages(packagesFileStream);
+            userService.importClasses(classesFileStream);
 
             return Response.ok().build();
         } catch (ServiceException e) {

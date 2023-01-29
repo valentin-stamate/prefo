@@ -219,7 +219,7 @@ public class UserService {
     public Map<String, List<ClassModel>> getAllClasses() throws ServiceException {
         var allClasses = classRepository.findAll();
 
-        var map = new HashMap<String, List<ClassModel>>();
+        var map = new TreeMap<String, List<ClassModel>>();
 
         for (var _class : allClasses) {
             var classPackage = _class.getClassPackage();
