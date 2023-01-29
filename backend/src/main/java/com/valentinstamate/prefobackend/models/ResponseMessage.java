@@ -13,4 +13,9 @@ public interface ResponseMessage {
     String CLASS_ALREADY_ASSOCIATED = "The class is already associated with the user.";
     String SOMETHING_WENT_WRONG = "Something went wrong.";
     String CANNOT_WRITE_WORKBOOK = "Cannot write workbook";
+    String PREFERENCES_LIST_NOT_EMPTY = "Preference list should not be empty";
+    String CLASS_NOT_FOUND = "Class not found";
+    String PACKAGE_NOT_FOUND = "Package not found";
+    String INVALID_PRIORITY = "Invalid priority";
+    String CLASSES_SAME_TYPE = "Classes must be in the same package";
 }

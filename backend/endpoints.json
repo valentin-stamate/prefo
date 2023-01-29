@@ -10,7 +10,7 @@
 			"name": "Admin",
 			"item": [
 				{
-					"name": "Import Users",
+					"name": "Import Students",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -26,26 +26,26 @@
 								{
 									"key": "file",
 									"type": "file",
-									"src": "/C:/Users/Valentin/Desktop/studenti_mock.xlsx"
+									"src": "/home/valentin/Desktop/PrefO/studenti_mock.xlsx"
 								}
 							]
 						},
 						"url": {
-							"raw": "{{host}}/api/admins/import-users",
+							"raw": "{{host}}/api/admins/import-students",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"api",
 								"admins",
-								"import-users"
+								"import-students"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Import Classes",
+					"name": "Import Classes and Packages",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -59,9 +59,14 @@
 							"mode": "formdata",
 							"formdata": [
 								{
-									"key": "file",
+									"key": "discipline",
 									"type": "file",
-									"src": "/C:/Users/Valentin/Desktop/discipline.xlsx"
+									"src": "/home/valentin/Desktop/PrefO/discipline.xlsx"
+								},
+								{
+									"key": "packete",
+									"type": "file",
+									"src": "/home/valentin/Desktop/PrefO/packete.xlsx"
 								}
 							]
 						},
@@ -74,41 +79,6 @@
 								"api",
 								"admins",
 								"import-classes"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Import Packages",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "{{admin_token}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "file",
-									"type": "file",
-									"src": "/C:/Users/Valentin/Desktop/packete.xlsx"
-								}
-							]
-						},
-						"url": {
-							"raw": "{{host}}/api/admins/import-packages",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"admins",
-								"import-packages"
 							]
 						}
 					},
@@ -177,11 +147,43 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Export Preferences",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{admin_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{host}}/api/admins/export-preferences",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"admins",
+								"export-preferences"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
 		{
-			"name": "User",
+			"name": "Student",
 			"item": [
 				{
 					"name": "Get Classes",
@@ -195,13 +197,13 @@
 							}
 						],
 						"url": {
-							"raw": "{{host}}/api/users/classes",
+							"raw": "{{host}}/api/students/classes",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"api",
-								"users",
+								"students",
 								"classes"
 							]
 						}
@@ -220,13 +222,13 @@
 							}
 						],
 						"url": {
-							"raw": "{{host}}/api/users/packages",
+							"raw": "{{host}}/api/students/packages",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"api",
-								"users",
+								"students",
 								"packages"
 							]
 						}
@@ -234,7 +236,7 @@
 					"response": []
 				},
 				{
-					"name": "Associate Class",
+					"name": "Get Student Preferenes",
 					"request": {
 						"method": "GET",
 						"header": [
@@ -245,21 +247,21 @@
 							}
 						],
 						"url": {
-							"raw": "{{host}}/api/users/associate-class",
+							"raw": "{{host}}/api/students/preference",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"api",
-								"users",
-								"associate-class"
+								"students",
+								"preference"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Associate Class",
+					"name": "Add Student Preference",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -269,32 +271,31 @@
 								"type": "text"
 							}
 						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"packageName\": \"CO1\",\n    \"preferences\": [\n        {\n            \"id\": 17,\n            \"priority\": 1\n        },\n        {\n            \"id\": 18,\n            \"priority\": 1\n        },\n        {\n            \"id\": 16,\n            \"priority\": 4\n        },\n        {\n            \"id\": 15,\n            \"priority\": 3\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "{{host}}/api/users/associate-class?id=24&priority=3",
+							"raw": "{{host}}/api/students/preference",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"api",
-								"users",
-								"associate-class"
-							],
-							"query": [
-								{
-									"key": "id",
-									"value": "24"
-								},
-								{
-									"key": "priority",
-									"value": "3"
-								}
+								"students",
+								"preference"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Associate Class",
+					"name": "Delete Student Preferece",
 					"request": {
 						"method": "DELETE",
 						"header": [
@@ -305,19 +306,19 @@
 							}
 						],
 						"url": {
-							"raw": "{{host}}/api/users/associate-class?id=24",
+							"raw": "{{host}}/api/students/preference?packageName=CO1",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"api",
-								"users",
-								"associate-class"
+								"students",
+								"preference"
 							],
 							"query": [
 								{
-									"key": "id",
-									"value": "24"
+									"key": "packageName",
+									"value": "CO1"
 								}
 							]
 						}

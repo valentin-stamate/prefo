@@ -73,8 +73,16 @@ public class UserModel implements Serializable {
         this.preferenceModels.add(preferenceModel);
     }
 
+    public void addUserPreferences(ArrayList<PreferenceModel> preferences) {
+        this.preferenceModels.addAll(preferences);
+    }
+
     public void removeUserPreference(PreferenceModel preferenceModel) {
         this.preferenceModels.remove(preferenceModel);
+    }
+
+    public void removeUserPreferencesByPackageName(String packageName) {
+        preferenceModels.removeIf(item -> item.get_class().getClassPackage().equals(packageName));
     }
 
     public void setUserClasses(List<PreferenceModel> preferenceModels) {
@@ -137,6 +145,22 @@ public class UserModel implements Serializable {
         this.preferenceModels = preferenceModels;
     }
 
+    public Integer getYear() {
+        return year;
+    }
+
+    public void setYear(Integer year) {
+        this.year = year;
+    }
+
+    public Integer getSemester() {
+        return semester;
+    }
+
+    public void setSemester(Integer semester) {
+        this.semester = semester;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -153,21 +177,5 @@ public class UserModel implements Serializable {
         int result = username.hashCode();
         result = 31 * result + email.hashCode();
         return result;
-    }
-
-    public Integer getYear() {
-        return year;
-    }
-
-    public void setYear(Integer year) {
-        this.year = year;
-    }
-
-    public Integer getSemester() {
-        return semester;
-    }
-
-    public void setSemester(Integer semester) {
-        this.semester = semester;
     }
 }

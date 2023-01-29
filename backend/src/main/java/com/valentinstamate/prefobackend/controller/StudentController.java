@@ -1,5 +1,6 @@
 package com.valentinstamate.prefobackend.controller;
 
+import com.valentinstamate.prefobackend.controller.requests.PreferencesBody;
 import com.valentinstamate.prefobackend.filters.binding.UserAuthenticated;
 import com.valentinstamate.prefobackend.service.UserService;
 import com.valentinstamate.prefobackend.service.exception.ServiceException;
@@ -11,9 +12,9 @@ import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
-@Path("/users")
+@Path("/students")
 @UserAuthenticated
-public class UserController {
+public class StudentController {
 
     @Inject
     private UserService userService;
@@ -45,13 +46,13 @@ public class UserController {
     }
 
     @GET
-    @Path("/user-preference")
+    @Path("/preference")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getUserClasses(@Context HttpHeaders headers) {
+    public Response getStudentClasses(@Context HttpHeaders headers) {
         var jwtPayload = UserJwtPayloadService.getUserPayloadFromHeaders(headers);
 
         try {
-            var result = userService.getUserPreferences(jwtPayload.getUsername());
+            var result = userService.getStudentPreferences(jwtPayload.getUsername());
 
             return Response.ok(result).build();
         } catch (ServiceException e) {
@@ -60,12 +61,13 @@ public class UserController {
     }
 
     @POST
-    @Path("/user-preference")
-    public Response associateUserClass(@Context HttpHeaders headers, @QueryParam("id") int classId, @QueryParam("priority") int priority) {
+    @Path("/preference")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response addStudentPreferences(@Context HttpHeaders headers, PreferencesBody body) {
         var jwtPayload = UserJwtPayloadService.getUserPayloadFromHeaders(headers);
 
         try {
-            userService.addUserPreferene(jwtPayload.getUsername(), classId, priority);
+            userService.addStudentPreferences(jwtPayload.getUsername(), body);
 
             return Response.ok().build();
         } catch (ServiceException e) {
@@ -74,12 +76,12 @@ public class UserController {
     }
 
     @DELETE
-    @Path("/user-preference")
-    public Response removeUserClass(@Context HttpHeaders headers, @QueryParam("id") int classId) {
+    @Path("/preference")
+    public Response removeStudentClass(@Context HttpHeaders headers, @QueryParam("packageName") String packageName) {
         var jwtPayload = UserJwtPayloadService.getUserPayloadFromHeaders(headers);
 
         try {
-            userService.removeUserPreference(jwtPayload.getUsername(), classId);
+            userService.removeStudentPreferences(jwtPayload.getUsername(), packageName);
 
             return Response.ok().build();
         } catch (ServiceException e) {

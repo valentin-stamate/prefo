@@ -6,7 +6,7 @@ import java.util.List;
 
 public class PackageExcelService extends ExcelRowService<PackageExcelRowMapping> {
     private final List<String> header = List.of(
-            "Packet", "An", "Semestru", "Credite"
+            "Packet", "An", "Semestru", "Credite", "Discipline"
     );
 
     @Override
@@ -23,7 +23,8 @@ public class PackageExcelService extends ExcelRowService<PackageExcelRowMapping>
                 cols.get(0),
                 cols.get(1),
                 cols.get(2),
-                cols.get(3)
+                cols.get(3),
+                cols.get(4)
         );
     }
 

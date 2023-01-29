@@ -21,7 +21,7 @@ public class AdminController {
     private UserService userService;
 
     @POST
-    @Path("/import-users")
+    @Path("/import-students")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public Response importUsers(@FormDataParam("file") InputStream fileStream) {
         try {

@@ -33,4 +33,16 @@ public class PreferenceRepository extends DataRepository<PreferenceModel, Long> 
             return null;
         }
     }
+
+    public boolean removeByUserAndPackageName(UserModel userModel, String packageName) {
+        try {
+            em.createQuery("DELETE FROM PreferenceModel pr WHERE pr.user = :user AND pr._class.classPackage = :packageName")
+                    .setParameter("user", userModel)
+                    .setParameter("packageName", packageName)
+                    .executeUpdate();
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }
