@@ -9,6 +9,9 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @ApplicationScoped
 @Transactional
 public class PreferenceRepository extends DataRepository<PreferenceModel, Long> {
@@ -30,5 +33,4 @@ public class PreferenceRepository extends DataRepository<PreferenceModel, Long> 
             return null;
         }
     }
-
 }

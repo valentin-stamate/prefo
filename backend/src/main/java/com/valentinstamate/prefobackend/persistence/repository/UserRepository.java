@@ -8,6 +8,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @ApplicationScoped
@@ -31,6 +32,16 @@ public class UserRepository extends DataRepository<UserModel, Long> {
         }
     }
 
+    public List<UserModel> findAllStudents() {
+        try {
+            return em.createQuery("SELECT u FROM UserModel u WHERE u.userType = :userType", UserModel.class)
+                    .setParameter("userType", UserType.USER)
+                    .getResultList();
+        } catch (Exception e) {
+            return new ArrayList<>();
+        }
+    }
+
     public UserModel findByUsername(String username) {
         try {
             return em.createQuery("SELECT U FROM UserModel u WHERE u.username = :username", UserModel.class)
@@ -50,5 +61,4 @@ public class UserRepository extends DataRepository<UserModel, Long> {
             throw e;
         }
     }
-
 }

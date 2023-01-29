@@ -7,7 +7,7 @@ import java.util.List;
 public class StudentExcelService extends ExcelRowService<StudentExcelRowMapping> {
 
     private final List<String> header = List.of(
-            "Numar", "Nume", "Matricol", "Email"
+            "Numar", "Nume", "Matricol", "Email", "An", "Semestru"
     );
 
     @Override
@@ -24,7 +24,9 @@ public class StudentExcelService extends ExcelRowService<StudentExcelRowMapping>
                 cols.get(0),
                 cols.get(1),
                 cols.get(2),
-                cols.get(3)
+                cols.get(3),
+                cols.get(4),
+                cols.get(5)
         );
     }
 

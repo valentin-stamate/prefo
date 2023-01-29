@@ -12,4 +12,5 @@ public interface ResponseMessage {
     String ERROR_PARSING_EXCEL = "Error parsing excel.";
     String CLASS_ALREADY_ASSOCIATED = "The class is already associated with the user.";
     String SOMETHING_WENT_WRONG = "Something went wrong.";
+    String CANNOT_WRITE_WORKBOOK = "Cannot write workbook";
 }

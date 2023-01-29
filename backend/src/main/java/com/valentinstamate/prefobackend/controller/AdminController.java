@@ -24,16 +24,12 @@ public class AdminController {
     @Path("/import-users")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public Response importUsers(@FormDataParam("file") InputStream fileStream) {
-
         try {
             userService.importUsers(fileStream);
 
             return Response.ok().build();
         } catch (ServiceException e) {
-            return Response
-                    .status(e.getStatus())
-                    .entity(e.getMessage())
-                    .build();
+            return Response.status(e.getStatus()).entity(e.getMessage()).build();
         }
     }
 
@@ -41,16 +37,12 @@ public class AdminController {
     @Path("/import-classes")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public Response importClasses(@FormDataParam("file") InputStream fileStream) {
-
         try {
             userService.importClasses(fileStream);
 
             return Response.ok().build();
         } catch (ServiceException e) {
-            return Response
-                    .status(e.getStatus())
-                    .entity(e.getMessage())
-                    .build();
+            return Response.status(e.getStatus()).entity(e.getMessage()).build();
         }
     }
 
@@ -58,16 +50,12 @@ public class AdminController {
     @Path("/import-packages")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public Response importPackages(@FormDataParam("file") InputStream fileStream) {
-
         try {
             userService.importPackages(fileStream);
 
             return Response.ok().build();
         } catch (ServiceException e) {
-            return Response
-                    .status(e.getStatus())
-                    .entity(e.getMessage())
-                    .build();
+            return Response.status(e.getStatus()).entity(e.getMessage()).build();
         }
     }
 
@@ -80,10 +68,7 @@ public class AdminController {
 
             return Response.ok(result).build();
         } catch (ServiceException e) {
-            return Response
-                    .status(e.getStatus())
-                    .entity(e.getMessage())
-                    .build();
+            return Response.status(e.getStatus()).entity(e.getMessage()).build();
         }
     }
 
@@ -96,10 +81,20 @@ public class AdminController {
 
             return Response.ok(result).build();
         } catch (ServiceException e) {
-            return Response
-                    .status(e.getStatus())
-                    .entity(e.getMessage())
-                    .build();
+            return Response.status(e.getStatus()).entity(e.getMessage()).build();
+        }
+    }
+
+    @GET
+    @Path("/export-preferences")
+    @Produces(MediaType.APPLICATION_OCTET_STREAM)
+    public Response exportPreferences() {
+        try {
+            var result = userService.exportStudentsPreferences();
+
+            return Response.ok(result).build();
+        } catch (ServiceException e) {
+            return Response.status(e.getStatus()).entity(e.getMessage()).build();
         }
     }
 }

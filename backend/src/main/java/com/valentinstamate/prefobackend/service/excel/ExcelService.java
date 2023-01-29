@@ -74,7 +74,7 @@ public class ExcelService {
                     cell.setCellValue((Date) cellValue);
                     cell.setCellStyle(cellStyle);
                 } else {
-                    cell.setCellValue((String) cellValue);
+                    cell.setCellValue("" + cellValue);
                 }
 
             }

@@ -22,6 +22,10 @@ public class UserModel implements Serializable {
     @Column(nullable = false)
     private String password;
     @Column(nullable = false)
+    private Integer year = 0;
+    @Column(nullable = false)
+    private Integer semester = 0;
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private UserType userType = UserType.USER;
 
@@ -30,27 +34,33 @@ public class UserModel implements Serializable {
 
     public UserModel() { }
 
-    public UserModel(String username, String fullName, String email, String password, UserType userType) {
+    public UserModel(String username, String fullName, String email, String password, Integer year, Integer semester, UserType userType) {
         this.username = username;
         this.fullName = fullName;
         this.email = email;
         this.password = password;
+        this.year = year;
+        this.semester = semester;
         this.userType = userType;
     }
 
-    public UserModel(String username, String fullName, String email, String password) {
+    public UserModel(String username, String fullName, String email, String password, Integer year, Integer semester) {
         this.username = username;
         this.fullName = fullName;
         this.email = email;
         this.password = password;
+        this.year = year;
+        this.semester = semester;
     }
 
-    public UserModel(Long id, String username, String fullName, String email, String password, UserType userType, List<PreferenceModel> preferenceModels) {
+    public UserModel(Long id, String username, String fullName, String email, String password, Integer year, Integer semester, UserType userType, List<PreferenceModel> preferenceModels) {
         this.id = id;
         this.username = username;
         this.fullName = fullName;
         this.email = email;
         this.password = password;
+        this.year = year;
+        this.semester = semester;
         this.userType = userType;
         this.preferenceModels = preferenceModels;
     }
@@ -143,5 +153,21 @@ public class UserModel implements Serializable {
         int result = username.hashCode();
         result = 31 * result + email.hashCode();
         return result;
+    }
+
+    public Integer getYear() {
+        return year;
+    }
+
+    public void setYear(Integer year) {
+        this.year = year;
+    }
+
+    public Integer getSemester() {
+        return semester;
+    }
+
+    public void setSemester(Integer semester) {
+        this.semester = semester;
     }
 }

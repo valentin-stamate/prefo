@@ -19,17 +19,12 @@ public class VisitorController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     public Response login(LoginBody loginBody) {
-
         try {
             var result = userService.checkCredentialsForLogin(loginBody.username, loginBody.password);
 
             return Response.ok().entity(result).build();
         } catch (ServiceException e) {
-            return Response
-                    .status(e.getStatus())
-                    .entity(e.getMessage())
-                    .build();
+            return Response.status(e.getStatus()).entity(e.getMessage()).build();
         }
     }
-
 }

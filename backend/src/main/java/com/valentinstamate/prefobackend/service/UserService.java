@@ -14,17 +14,18 @@ import com.valentinstamate.prefobackend.service.excel.mapping.*;
 import com.valentinstamate.prefobackend.service.excel.parser.ClassExcelParser;
 import com.valentinstamate.prefobackend.service.excel.parser.PackageExcelParser;
 import com.valentinstamate.prefobackend.service.excel.parser.StudentExcelParser;
+import com.valentinstamate.prefobackend.service.excel.to_excel.PreferenceRowsToExcelService;
 import com.valentinstamate.prefobackend.service.exception.ServiceException;
 import com.valentinstamate.prefobackend.service.jwt.JwtService;
 import com.valentinstamate.prefobackend.service.jwt.UserJwtPayloadService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.core.Response;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @ApplicationScoped
@@ -80,7 +81,7 @@ public class UserService {
         userRepository.removeAllNonAdminUsers();
 
         for (var row : rows) {
-            var newUser = new UserModel(row.email, row.name, row.email, row.identifier);
+            var newUser = new UserModel(row.email, row.name, row.email, row.identifier, row.year, row.semester);
             userRepository.persist(newUser);
         }
     }
@@ -231,5 +232,54 @@ public class UserService {
         }
 
         return map;
+    }
+
+    public InputStream exportStudentsPreferences() throws ServiceException {
+        var objectMapper = new ObjectMapper();
+
+        var packages = packageRepository.findAll();
+        var packagesNumber = packages.size();
+
+        var usersPreferenceRows = userRepository
+                .findAllStudents()
+                .stream().map(user -> {
+                    var preferences = user.getPreferenceModels();
+
+                    var year = user.getYear();
+                    var semester = user.getSemester();
+
+                    var row = new ArrayList<Object>();
+                    row.add(user.getUsername());
+                    row.add(user.getFullName());
+                    row.add(year);
+                    row.add(semester);
+                    row.add(year * 2 - 1 + semester);
+
+                    var sortedPreferencesByPackage = ServiceUtils.orderPreferences(preferences, packagesNumber);
+
+                    for (int i = 1; i <= packagesNumber; i++) {
+                        var packageQueue = sortedPreferencesByPackage.get(String.format("CO%d", i));
+
+                        row.add(Objects.requireNonNullElse(packageQueue.poll(), ""));
+                        row.add(Objects.requireNonNullElse(packageQueue.poll(), ""));
+                        row.add(Objects.requireNonNullElse(packageQueue.poll(), ""));
+                        row.add(Objects.requireNonNullElse(packageQueue.poll(), ""));
+                    }
+
+                    return (List<Object>) row;
+                })
+                .collect(Collectors.toList());
+
+        var workbook = PreferenceRowsToExcelService.parse(usersPreferenceRows);
+
+        var byteStream = new ByteArrayOutputStream();
+
+        try {
+            workbook.write(byteStream);
+            var byteArray = byteStream.toByteArray();
+            return new ByteArrayInputStream(byteArray);
+        } catch (Exception e) {
+            throw new ServiceException(ResponseMessage.CANNOT_WRITE_WORKBOOK, Response.Status.INTERNAL_SERVER_ERROR);
+        }
     }
 }

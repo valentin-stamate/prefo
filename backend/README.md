@@ -1,5 +1,8 @@
 # PrefO - Backend
 
+## Database
+```docker run -p 5432:5432 --name prefo -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=prefo -d --restart unless-stopped postgres```
+
 ## Configuration
 * Payara 6
 * Jakarta 10
