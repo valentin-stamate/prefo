@@ -22,7 +22,6 @@ import com.valentinstamate.prefobackend.service.jwt.UserJwtPayloadService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.core.Response;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
@@ -62,7 +61,20 @@ public class UserService {
         return token;
     }
 
-    public void importUsers(InputStream fileStream) throws ServiceException {
+    public Object getUserInfo(String username) throws ServiceException {
+        var userModel = userRepository.findByUsername(username);
+        return ServiceUtils.removeSensitiveInformationFromObject(userModel);
+    }
+
+    public List<Object> getStudents() throws ServiceException {
+        var students = userRepository.findAllStudents();
+
+        return students.stream()
+                .map(ServiceUtils::removeSensitiveInformationFromObject)
+                .collect(Collectors.toList());
+    }
+
+    public void importStudents(InputStream fileStream) throws ServiceException {
         byte[] buffer;
 
         try {
@@ -80,12 +92,16 @@ public class UserService {
             throw new ServiceException(e.getMessage(), Response.Status.NOT_ACCEPTABLE);
         }
 
+        preferenceRepository.removeAll();
         userRepository.removeAllNonAdminUsers();
 
         for (var row : rows) {
             var newUser = new UserModel(row.email, row.name, row.email, row.identifier, row.year, row.semester);
             userRepository.persist(newUser);
         }
+
+        preferenceRepository.clearCache();
+        userRepository.clearCache();
     }
 
     public void importClasses(InputStream fileStream) throws ServiceException {
@@ -181,7 +197,7 @@ public class UserService {
         return hashMap;
     }
 
-    public void addStudentPreferences(String username, PreferencesBody preferencesBody) throws ServiceException {
+    public void updateStudentPreferences(String username, PreferencesBody preferencesBody) throws ServiceException {
         var userModel = userRepository.findByUsername(username);
 
         var packageName = preferencesBody.packageName;
@@ -202,9 +218,17 @@ public class UserService {
 
         var newPreferences = new ArrayList<PreferenceModel>();
 
+        var idSet = new HashSet<Integer>();
+
         for (var preference : preferences) {
             var classModel = classRepository.findById((long) preference.id);
             var priority = preference.priority;
+
+            if (idSet.contains(preference.id)) {
+                throw new ServiceException(ResponseMessage.DUPLICATE_CLASSES_NOT_ALLOWED, Response.Status.NOT_ACCEPTABLE);
+            }
+
+            idSet.add(preference.id);
 
             if (classModel == null) {
                 throw new ServiceException(ResponseMessage.CLASS_NOT_FOUND, Response.Status.NOT_FOUND);
@@ -222,7 +246,7 @@ public class UserService {
         }
 
         userModel.removeUserPreferencesByPackageName(packageName);
-        userModel.addUserPreferences(newPreferences);
+        userModel.addUserPreferenceModels(newPreferences);
         preferenceRepository.removeByUserAndPackageName(userModel, packageName);
 
         userRepository.update(userModel);
@@ -247,21 +271,46 @@ public class UserService {
 
     public Map<String, List<ClassModel>> getAllClasses() throws ServiceException {
         var allClasses = classRepository.findAll();
+        return ServiceUtils.getSortedClassesByPackage(allClasses);
+    }
 
-        var map = new TreeMap<String, List<ClassModel>>();
+    public List<Object> getAllCLassesWithRestriction(String username) throws ServiceException {
+        var userModel = userRepository.findByUsername(username);
 
-        for (var _class : allClasses) {
-            var classPackage = _class.getClassPackage();
-            _class.setPreferenceModels(new ArrayList<>());
-
-            if (!map.containsKey(classPackage)) {
-                map.put(classPackage, new ArrayList<>());
-            }
-
-            map.get(classPackage).add(_class);
+        var packages = packageRepository.findAll();
+        var packageMap = new HashMap<String, PackageModel>();
+        for (var packageModel : packages) {
+            packageMap.put(packageModel.getPackageName(), packageModel);
         }
 
-        return map;
+        var userYear = userModel.getYear();
+
+        var allClasses = classRepository.findAll();
+        var allSortedClassesByPackage = ServiceUtils.getSortedClassesByPackage(allClasses);
+
+        var classesList = new ArrayList<>();
+
+        for (var packageName : allSortedClassesByPackage.keySet()) {
+            var classes = allSortedClassesByPackage.get(packageName);
+
+            var packageYear = -1;
+
+            var packageModel = packageMap.get(packageName);
+
+            System.out.println(packageName);
+            if (!packageName.equals("C00") || packageModel != null) {
+                packageYear = packageModel.getYear();
+            }
+
+            var availablePackageMap = new LinkedHashMap<String, Object>();
+            availablePackageMap.put("packageName", packageName);
+            availablePackageMap.put("available", userYear + 1 == packageYear);
+            availablePackageMap.put("classes", classes);
+
+            classesList.add(availablePackageMap);
+        }
+
+        return classesList;
     }
 
     public InputStream exportStudentsPreferences() throws ServiceException {

@@ -18,4 +18,5 @@ public interface ResponseMessage {
     String PACKAGE_NOT_FOUND = "Package not found";
     String INVALID_PRIORITY = "Invalid priority";
     String CLASSES_SAME_TYPE = "Classes must be in the same package";
+    String DUPLICATE_CLASSES_NOT_ALLOWED = "Duplicate classes are not allowed";
 }

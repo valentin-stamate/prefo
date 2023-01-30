@@ -65,15 +65,8 @@ public class UserModel implements Serializable {
         this.preferenceModels = preferenceModels;
     }
 
-    public List<PreferenceModel> getUserClasses() {
-        return preferenceModels;
-    }
 
-    public void addUserPreference(PreferenceModel preferenceModel) {
-        this.preferenceModels.add(preferenceModel);
-    }
-
-    public void addUserPreferences(ArrayList<PreferenceModel> preferences) {
+    public void addUserPreferenceModels(ArrayList<PreferenceModel> preferences) {
         this.preferenceModels.addAll(preferences);
     }
 
@@ -81,11 +74,19 @@ public class UserModel implements Serializable {
         this.preferenceModels.remove(preferenceModel);
     }
 
+    public List<PreferenceModel> getPreferenceModels() {
+        return preferenceModels;
+    }
+
+    public void setPreferenceModels(List<PreferenceModel> preferenceModels) {
+        this.preferenceModels = preferenceModels;
+    }
+
     public void removeUserPreferencesByPackageName(String packageName) {
         preferenceModels.removeIf(item -> item.get_class().getClassPackage().equals(packageName));
     }
 
-    public void setUserClasses(List<PreferenceModel> preferenceModels) {
+    public void setUserPreferences(List<PreferenceModel> preferenceModels) {
         this.preferenceModels = preferenceModels;
     }
 
@@ -135,14 +136,6 @@ public class UserModel implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public List<PreferenceModel> getPreferenceModels() {
-        return preferenceModels;
-    }
-
-    public void setPreferenceModels(List<PreferenceModel> preferenceModels) {
-        this.preferenceModels = preferenceModels;
     }
 
     public Integer getYear() {

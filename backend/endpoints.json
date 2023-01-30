@@ -10,6 +10,70 @@
 			"name": "Admin",
 			"item": [
 				{
+					"name": "Get Admin Info",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{admin_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{host}}/api/admins/info",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"admins",
+								"info"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Students",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{admin_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{host}}/api/admins/students",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"admins",
+								"students"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Import Students",
 					"request": {
 						"method": "POST",
@@ -31,14 +95,14 @@
 							]
 						},
 						"url": {
-							"raw": "{{host}}/api/admins/import-students",
+							"raw": "{{host}}/api/admins/students",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"api",
 								"admins",
-								"import-students"
+								"students"
 							]
 						}
 					},
@@ -186,6 +250,31 @@
 			"name": "Student",
 			"item": [
 				{
+					"name": "Get Student Info",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{user_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{host}}/api/students/info",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"students",
+								"info"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Get Classes",
 					"request": {
 						"method": "GET",
@@ -273,7 +362,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"packageName\": \"CO1\",\n    \"preferences\": [\n        {\n            \"id\": 17,\n            \"priority\": 1\n        },\n        {\n            \"id\": 18,\n            \"priority\": 1\n        },\n        {\n            \"id\": 16,\n            \"priority\": 4\n        },\n        {\n            \"id\": 15,\n            \"priority\": 3\n        }\n    ]\n}",
+							"raw": "{\n    \"packageName\": \"CO1\",\n    \"preferences\": [\n        {\n            \"id\": 17,\n            \"priority\": 1\n        },\n        {\n            \"id\": 18,\n            \"priority\": 4\n        },\n        {\n            \"id\": 16,\n            \"priority\": 4\n        },\n        {\n            \"id\": 15,\n            \"priority\": 3\n        }\n    ]\n}",
 							"options": {
 								"raw": {
 									"language": "json"

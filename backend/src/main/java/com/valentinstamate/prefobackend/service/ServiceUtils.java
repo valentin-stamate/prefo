@@ -1,5 +1,7 @@
 package com.valentinstamate.prefobackend.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.valentinstamate.prefobackend.persistence.models.ClassModel;
 import com.valentinstamate.prefobackend.persistence.models.PreferenceModel;
 
 import java.util.*;
@@ -40,6 +42,34 @@ public class ServiceUtils {
         }
 
         return orderPackageMap;
+    }
+
+    public static Map<String, List<ClassModel>> getSortedClassesByPackage(List<ClassModel> allClasses) {
+        var map = new TreeMap<String, List<ClassModel>>();
+
+        for (var _class : allClasses) {
+            var classPackage = _class.getClassPackage();
+            _class.setPreferenceModels(new ArrayList<>());
+
+            if (!map.containsKey(classPackage)) {
+                map.put(classPackage, new ArrayList<>());
+            }
+
+            map.get(classPackage).add(_class);
+        }
+
+        return map;
+    }
+
+    public static Map<String, Object> removeSensitiveInformationFromObject(Object o) {
+        var objectMapper = new ObjectMapper();
+        var mapObject = objectMapper.convertValue(o, Map.class);
+
+        mapObject.remove("password");
+        mapObject.remove("preferenceModels");
+        mapObject.remove("userPreferences");
+
+        return mapObject;
     }
 
 }

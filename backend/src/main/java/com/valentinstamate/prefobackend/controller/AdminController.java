@@ -20,12 +20,40 @@ public class AdminController {
     @Inject
     private UserService userService;
 
-    @POST
-    @Path("/import-students")
-    @Consumes(MediaType.MULTIPART_FORM_DATA)
-    public Response importUsers(@FormDataParam("file") InputStream fileStream) {
+    @GET
+    @Path("/info")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getAdminInfo(@Context HttpHeaders headers) {
+        var jwtPayload = UserJwtPayloadService.getUserPayloadFromHeaders(headers);
+
         try {
-            userService.importUsers(fileStream);
+            var result = userService.getUserInfo(jwtPayload.getUsername());
+
+            return Response.ok(result).build();
+        } catch (ServiceException e) {
+            return Response.status(e.getStatus()).entity(e.getMessage()).build();
+        }
+    }
+
+    @GET
+    @Path("/students")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getStudents() {
+        try {
+            var result = userService.getStudents();
+
+            return Response.ok(result).build();
+        } catch (ServiceException e) {
+            return Response.status(e.getStatus()).entity(e.getMessage()).build();
+        }
+    }
+
+    @POST
+    @Path("/students")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    public Response importStudents(@FormDataParam("file") InputStream fileStream) {
+        try {
+            userService.importStudents(fileStream);
 
             return Response.ok().build();
         } catch (ServiceException e) {

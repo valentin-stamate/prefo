@@ -20,6 +20,21 @@ public class StudentController {
     private UserService userService;
 
     @GET
+    @Path("/info")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getStudentInfo(@Context HttpHeaders headers) {
+        var jwtPayload = UserJwtPayloadService.getUserPayloadFromHeaders(headers);
+
+        try {
+            var result = userService.getUserInfo(jwtPayload.getUsername());
+
+            return Response.ok(result).build();
+        } catch (ServiceException e) {
+            return Response.status(e.getStatus()).entity(e.getMessage()).build();
+        }
+    }
+
+    @GET
     @Path("/packages")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getPackages() {
@@ -35,9 +50,11 @@ public class StudentController {
     @GET
     @Path("/classes")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getClasses() {
+    public Response getClasses(@Context HttpHeaders headers) {
+        var jwtPayload = UserJwtPayloadService.getUserPayloadFromHeaders(headers);
+
         try {
-            var result = userService.getAllClasses();
+            var result = userService.getAllCLassesWithRestriction(jwtPayload.getUsername());
 
             return Response.ok(result).build();
         } catch (ServiceException e) {
@@ -63,11 +80,11 @@ public class StudentController {
     @POST
     @Path("/preference")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response addStudentPreferences(@Context HttpHeaders headers, PreferencesBody body) {
+    public Response updateStudentPreferences(@Context HttpHeaders headers, PreferencesBody body) {
         var jwtPayload = UserJwtPayloadService.getUserPayloadFromHeaders(headers);
 
         try {
-            userService.addStudentPreferences(jwtPayload.getUsername(), body);
+            userService.updateStudentPreferences(jwtPayload.getUsername(), body);
 
             return Response.ok().build();
         } catch (ServiceException e) {

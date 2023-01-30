@@ -15,14 +15,14 @@ public class ClassExcelRowMapping {
     public final Integer credits;
 
     public ClassExcelRowMapping(Object code, Object shortName, Object name, Object year, Object semester, Object owner, Object site, Object classPackage, Object credits) {
-        this.code = (String) code;
-        this.shortName = (String) shortName;
-        this.name = (String) name;
+        this.code = "" + code;
+        this.shortName = "" + shortName;
+        this.name = "" + name;
         this.year = ExcelService.parseNumericCol(year);
         this.semester = ExcelService.parseNumericCol(semester);
-        this.owner = (String) owner;
-        this.site = (String) site;
-        this.classPackage = (String) classPackage;
+        this.owner = "" + owner;
+        this.site = "" + site;
+        this.classPackage = "" + classPackage;
         this.credits = ExcelService.parseNumericCol(credits);
     }
 

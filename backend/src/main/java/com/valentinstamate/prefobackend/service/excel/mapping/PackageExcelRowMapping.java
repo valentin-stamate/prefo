@@ -11,7 +11,7 @@ public class PackageExcelRowMapping {
     public final Integer classes;
 
     public PackageExcelRowMapping(Object packageName, Object year, Object semester, Object credits, Object classes) {
-        this.packageName = (String) packageName;
+        this.packageName = "" + packageName;
         this.year = ExcelService.parseNumericCol(year);
         this.semester = ExcelService.parseNumericCol(semester);
         this.credits = ExcelService.parseNumericCol(credits);
