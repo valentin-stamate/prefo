@@ -37,3 +37,6 @@ out/
 .vscode/
 gradlew
 gradlew.bat
+lib/*
+!lib/.gitkeep
+gradle
