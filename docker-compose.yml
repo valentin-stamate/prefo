@@ -24,6 +24,8 @@ services:
       - DATABASE_PASSWORD=postgres
     networks:
       - prefo-network
+    depends_on:
+      - prefo-db
 
   prefo-db:
     image: postgres:latest
